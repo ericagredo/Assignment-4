@@ -14,24 +14,17 @@ module.exports.init = function() {
   //initialize app
   var app = express();
 
-  //enable request logging for development debugging
+ 
   app.use(morgan('dev'));
-
-  //body parsing middleware 
   app.use(bodyParser.json());
-
-  /* server wrapper around Google Maps API to get latitude + longitude coordinates from address */
   app.post('/api/coordinates', getCoordinates, function(req, res) {
     res.send(req.results);
   });
-
-  /* serve static files */
-  
-
-  /* use the listings router for requests to the api */
-
-
-  /* go to homepage for all routes not specified */ 
+  app.use("/", express.static("client"));
+  app.use("/api/listings", listingsRouter);
+  app.use("/*", function(req, res){
+    res.redirect("/");
+  })
 
   return app;
 };  
